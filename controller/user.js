@@ -10,16 +10,14 @@ exports.CPostSignin = (req, res) => {
     User.findOne({ where: { id: id } })
         .then((user) => {
             if (!user) {
-                console.log('로그인 실패: 사용자 정보가 일치하지 않습니다.');
-                res.status(401).json({ message: '로그인에 실패했습니다.' });
+                res.send({ message: '로그인에 실패했습니다.' });
                 return;
             }
 
             // 비밀번호 일치 여부를 확인
             bcrypt.compare(pw, user.pw, (err, result) => {
                 if (err) {
-                    console.error('비밀번호 비교 실패:', err);
-                    res.status(500).json({ message: '로그인에 실패했습니다.' });
+                    res.send({ message: '로그인에 실패했습니다.' });
                     return;
                 }
 
@@ -32,18 +30,14 @@ exports.CPostSignin = (req, res) => {
                         maxAge: 3600000, // 쿠키 유효 기간 (예: 1시간)
                         httpOnly: true, // 클라이언트에서 쿠키에 접근하지 못하도록 설정
                     });
-
-                    console.log('로그인 성공');
-                    res.status(200).json({ message: '로그인에 성공했습니다.' });
+                    res.send({ message: '로그인에 성공했습니다.' });
                 } else {
-                    console.log('로그인 실패: 비밀번호가 일치하지 않습니다.');
-                    res.status(401).json({ message: '로그인에 실패했습니다.' });
+                    res.send({ message: '로그인에 실패했습니다.' });
                 }
             });
         })
         .catch((error) => {
-            console.error('로그인 실패:', error);
-            res.status(500).json({ message: '로그인에 실패했습니다.' });
+            res.send({ message: '로그인에 실패했습니다.' });
         });
 };
 
@@ -102,15 +96,15 @@ exports.CPostUser = async (req, res) => {
     let id, pw, name, email;
     // 데이터 유효성 검사
     if (
-        checkSpace(req.body.id.trim()) &&
-        checkSpace(req.body.pw.trim()) &&
-        checkSpecial(req.body.pw.trim()) &&
-        checkPasswordPattern(req.body.pw.trim())
+        checkSpace(req.body.user_id.trim()) &&
+        checkSpace(req.body.password.trim()) &&
+        checkSpecial(req.body.password.trim()) &&
+        checkPasswordPattern(req.body.password.trim())
     ) {
-        id = req.body.id.trim();
+        id = req.body.user_id.trim();
     } else {
         // ID와 비밀번호가 올바른 형식으로 입력되지 않은 경우
-        res.status(409).json({ msg: 'ID 또는 비밀번호의 형식이 올바르지 않습니다.', result: false });
+        res.send({ msg: 'ID 또는 비밀번호의 형식이 올바르지 않습니다.', result: false });
         return false;
     }
     // DB에 저장된 ID 가져오기
@@ -119,7 +113,8 @@ exports.CPostUser = async (req, res) => {
     // ID 중복 확인
     const duplicatedId = result.find((user) => user.id === id);
     if (duplicatedId) {
-        res.status(409).json({ msg: '이미 사용 중인 ID입니다.', result: false });
+        res.send({ msg: '이미 사용 중인 ID입니다.', result: false });
+
         return false;
     } else {
         email = req.body.email.trim(); // ID 중복 확인 성공 후 이메일 중복 체크를 위해 변수 할당
@@ -128,10 +123,10 @@ exports.CPostUser = async (req, res) => {
     // 이메일 중복 확인, 암호화하여 DB에 추가
     const duplicatedEmail = result.find((user) => user.email === email);
     if (duplicatedEmail) {
-        res.status(409).json({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
+        res.send({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
         return false;
     } else {
-        pw = req.body.pw.trim();
+        pw = req.body.password.trim();
         name = req.body.name.trim();
 
         // 비밀번호 암호화
@@ -142,7 +137,7 @@ exports.CPostUser = async (req, res) => {
             name: name,
             email: email,
         }).then((result) => {
-            res.status(200).json({ message: '가입이 완료되었습니다.', result: true });
+            res.send({ message: '가입이 완료되었습니다.', result: true });
         });
     }
 };
