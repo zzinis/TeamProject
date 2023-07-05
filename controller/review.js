@@ -1,8 +1,7 @@
-const db = require('../models/Review');
-const Participation = require('../models/Participation');
+const db = require('../models');
+const Participation = db.Participation;
 
 const Review = db.Review;
-
 // (GET) show all review
 exports.CgetReview = (req, res) => {
     Review.findAll().then((result) => {
@@ -13,15 +12,15 @@ exports.CgetReview = (req, res) => {
 
 // (POST) create a new review
 exports.createReview = async (req, res) => {
-    console.log('req.params.user_id', req.body.user_id);
     try {
         const result = await Participation.findOne({
             where: {
-                user_id: req.body.user_id,
-                test_id: req.body.test_id,
+                user_id: req.params.user_id,
+                test_id: req.params.test_id,
             },
         });
 
+        console.log('hhhhhhhhhh', result);
         if (result) {
             const reviewData = {
                 user_id: result.user_id,
@@ -32,7 +31,7 @@ exports.createReview = async (req, res) => {
             const createdReview = await Review.create(reviewData);
             console.log('리뷰가 작성되었습니다:', createdReview);
         } else {
-            console.log('참가 테이블에서 해당 사용자 및 테스트에 대한 결과를 찾을 수 없습니다.');
+            console.error('참여하지 않은 테스트에 대한 리뷰는 작성할 수 없습니다.');
         }
     } catch (error) {
         console.error('리뷰 작성 중 오류가 발생했습니다:', error);
