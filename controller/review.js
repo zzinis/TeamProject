@@ -54,11 +54,11 @@ exports.patchReview = (req, res) => {
         });
 };
 
-// // (DELETE) remove a specific review
-// exports.CdeleteReview = (req, res) => {
-//   let reviewId = req.params.reviewId;
-//   console.log(reviewId);
-//   Review.destroy({ where: { id: reviewId } }).then((result) => {
-//     res.send({ data: result });
-//   });
-// };
+// (DELETE) remove a specific review
+exports.deleteReview = (req, res) => {
+    let review_id = req.params.review_id;
+    console.log(review_id);
+    Review.destroy({ where: { review_id: review_id } }).then((result) => {
+        res.send({ data: result });
+    });
+};

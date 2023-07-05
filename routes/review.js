@@ -9,6 +9,6 @@ router.post('/review/:user_id/:test_id', controller.createReview);
 // // PATCH localhost:8000/review/:reviewId
 router.patch('/review/:user_id/:review_id', controller.patchReview);
 // // DELETE localhost:8000/review/:reviewId
-// router.delete("/review/:reviewId", controller.Cdeletereview);
+router.delete('/review/:user_id/:review_id', controller.deleteReview);
 
 module.exports = router;
