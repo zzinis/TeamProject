@@ -38,16 +38,21 @@ exports.createReview = async (req, res) => {
     }
 };
 
-// // (PATCH) edit a specific review
-// exports.CpatchReview = (req, res) => {
-//   let reviewId = req.params.reviewId;
-//   //여기로 데이터 받아오기
-//   Review.update({ title: "수정완료" }, { where: { id: reviewId } }).then(
-//     (result) => {
-//       res.send({ data: result });
-//     }
-//   );
-// };
+// (PATCH) edit a specific review
+// (PATCH) edit a specific review
+exports.patchReview = (req, res) => {
+    let review_id = req.params.review_id;
+    let updatedContent = req.body.content; // 수정된 내용을 요청 본문(body)에서 가져옵니다.
+
+    Review.update({ content: updatedContent }, { where: { review_id: review_id } })
+        .then((result) => {
+            res.send({ data: result });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: '리뷰 편집 중 오류가 발생했습니다.' });
+        });
+};
 
 // // (DELETE) remove a specific review
 // exports.CdeleteReview = (req, res) => {
