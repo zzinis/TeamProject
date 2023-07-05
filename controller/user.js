@@ -102,12 +102,12 @@ exports.CPostUser = async (req, res) => {
     let id, pw, name, email;
     // 데이터 유효성 검사
     if (
-        checkSpace(req.body.id.trim()) &&
-        checkSpace(req.body.pw.trim()) &&
-        checkSpecial(req.body.pw.trim()) &&
-        checkPasswordPattern(req.body.pw.trim())
+        checkSpace(req.body.user_id.trim()) &&
+        checkSpace(req.body.password.trim()) &&
+        checkSpecial(req.body.password.trim()) &&
+        checkPasswordPattern(req.body.password.trim())
     ) {
-        id = req.body.id.trim();
+        id = req.body.user_id.trim();
     } else {
         // ID와 비밀번호가 올바른 형식으로 입력되지 않은 경우
         res.status(409).json({ msg: 'ID 또는 비밀번호의 형식이 올바르지 않습니다.', result: false });
@@ -128,10 +128,11 @@ exports.CPostUser = async (req, res) => {
     // 이메일 중복 확인, 암호화하여 DB에 추가
     const duplicatedEmail = result.find((user) => user.email === email);
     if (duplicatedEmail) {
-        res.status(409).json({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
+        res.send({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
+        // res.status(409).json({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
         return false;
     } else {
-        pw = req.body.pw.trim();
+        pw = req.body.password.trim();
         name = req.body.name.trim();
 
         // 비밀번호 암호화
