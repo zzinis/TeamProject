@@ -97,55 +97,52 @@ function checkPasswordPattern(str) {
     }
 }
 
-// 회원가입
+// 회원 가입
 exports.CPostUser = async (req, res) => {
     let id, pw, name, email;
-    //데이터 유효성 검사
+    // 데이터 유효성 검사
     if (
-        checkSpace(req.body.id) &&
-        checkSpace(req.body.pw) &&
-        checkSpecial(req.body.pw) &&
-        checkPasswordPattern(req.body.pw)
+        checkSpace(req.body.id.trim()) &&
+        checkSpace(req.body.pw.trim()) &&
+        checkSpecial(req.body.pw.trim()) &&
+        checkPasswordPattern(req.body.pw.trim())
     ) {
-        id = req.body.id;
+        id = req.body.id.trim();
     } else {
-        //잘못된 형식의 id, pw가 입력 됐을 경우
-        res.status(409).json({ msg: 'id 또는 pw의 형식이 잘못되었습니다', result: false });
+        // ID와 비밀번호가 올바른 형식으로 입력되지 않은 경우
+        res.status(409).json({ msg: 'ID 또는 비밀번호의 형식이 올바르지 않습니다.', result: false });
         return false;
     }
-    //DB에 저장되어있는 id가져오기
-    let result;
-    await User.findAll().then((queryResult) => {
-        result = queryResult;
-    });
+    // DB에 저장된 ID 가져오기
+    const result = await User.findAll();
 
-    //아이디 중복 확인
+    // ID 중복 확인
     const duplicatedId = result.find((user) => user.id === id);
     if (duplicatedId) {
-        await res.status(409).json({ msg: '이미 사용 중인 아이디입니다.', result: false });
+        res.status(409).json({ msg: '이미 사용 중인 ID입니다.', result: false });
         return false;
     } else {
-        email = req.body.email; //아이디 중복확인 성공 시 이메일 중복확인을 위한 변수 할당
+        email = req.body.email.trim(); // ID 중복 확인 성공 후 이메일 중복 체크를 위해 변수 할당
     }
 
-    //이메일 중복 확인, 암호화, db추가
+    // 이메일 중복 확인, 암호화하여 DB에 추가
     const duplicatedEmail = result.find((user) => user.email === email);
     if (duplicatedEmail) {
-        await res.status(409).json({ msg: '이미 회원가입 하셨습니다', result: false });
+        res.status(409).json({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
         return false;
     } else {
-        pw = req.body.pw;
-        name = req.body.name;
+        pw = req.body.pw.trim();
+        name = req.body.name.trim();
 
-        //비밀번호 암호화
-        const hashedPassword = bcrypt.hashSync(pw, 10).substring(0, 255);
+        // 비밀번호 암호화
+        const hashedPassword = await bcrypt.hash(pw, 10);
         await User.create({
             id: id,
             pw: hashedPassword,
             name: name,
             email: email,
         }).then((result) => {
-            res.status(200).json({ message: '회원가입에 성공했습니다.', result: true });
+            res.status(200).json({ message: '가입이 완료되었습니다.', result: true });
         });
     }
 };

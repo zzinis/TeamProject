@@ -1,4 +1,6 @@
 const db = require('../models/Review');
+const Participation = require('../models/Participation');
+
 const Review = db.Review;
 
 // (GET) show all review
@@ -11,11 +13,12 @@ exports.CgetReview = (req, res) => {
 
 // (POST) create a new review
 exports.createReview = async (req, res) => {
+    console.log('req.params.user_id', req.body.user_id);
     try {
         const result = await Participation.findOne({
             where: {
-                user_id: req.params.user_id,
-                test_id: req.params.test_id,
+                user_id: req.body.user_id,
+                test_id: req.body.test_id,
             },
         });
 
