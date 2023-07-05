@@ -38,8 +38,7 @@ I have tried to add the following to the .gitignore file:
 ```
 #node_modules 에 있는건 다제외시켜줘
 # dependencies
-/node_modules
-
+*.sql
 /.pnp
 .pnp.js
 
