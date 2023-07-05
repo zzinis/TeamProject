@@ -5,22 +5,21 @@ const saltRounds = 10;
 
 // 로그인
 exports.CPostSignin = (req, res) => {
-    const { id, pw } = req.body;
+    const id = req.body.user_id;
+    const pw = req.body.password;
 
     User.findOne({ where: { id: id } })
         .then((user) => {
             if (!user) {
-                res.send({ message: '로그인에 실패했습니다.' });
+                res.send({ msg: '로그인에 실패했습니다.', result: false });
                 return;
             }
 
             // 비밀번호 일치 여부를 확인
             bcrypt.compare(pw, user.pw, (err, result) => {
                 if (err) {
-                    res.send({ message: '로그인에 실패했습니다.' });
-                    return;
+                    res.send({ msg: '로그인에 실패했습니다.', result: false });
                 }
-
                 if (result) {
                     // 로그인 성공 시 세션에 사용자 정보 저장
                     req.session.user = user;
@@ -30,14 +29,14 @@ exports.CPostSignin = (req, res) => {
                         maxAge: 3600000, // 쿠키 유효 기간 (예: 1시간)
                         httpOnly: true, // 클라이언트에서 쿠키에 접근하지 못하도록 설정
                     });
-                    res.send({ message: '로그인에 성공했습니다.' });
+                    res.send({ msg: '로그인에 성공했습니다.', result: true });
                 } else {
-                    res.send({ message: '로그인에 실패했습니다.' });
+                    res.send({ msg: '로그인에 실패했습니다.', result: false });
                 }
             });
         })
         .catch((error) => {
-            res.send({ message: '로그인에 실패했습니다.' });
+            res.send({ msg: '로그인에 실패했습니다.', result: false });
         });
 };
 
@@ -99,7 +98,7 @@ exports.CPostUser = async (req, res) => {
         checkSpace(req.body.user_id.trim()) &&
         checkSpace(req.body.password.trim()) &&
         checkSpecial(req.body.password.trim()) &&
-        checkPasswordPattern(req.body.password.trim())
+        checkPasswordPattern(req.body.password.trim() && req.body.user_id.length <= 10)
     ) {
         id = req.body.user_id.trim();
     } else {
