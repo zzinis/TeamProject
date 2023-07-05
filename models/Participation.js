@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (sequelize, DataTypes) => {
     const Participation = sequelize.define(
         'Participation',

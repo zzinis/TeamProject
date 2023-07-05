@@ -1,8 +1,7 @@
-const db = require('../models/Review');
-const Participation = require('../models/Participation');
+const db = require('../models');
+const Participation = db.Participation;
 
 const Review = db.Review;
-
 // (GET) show all review
 exports.CgetReview = (req, res) => {
     Review.findAll().then((result) => {
@@ -13,15 +12,15 @@ exports.CgetReview = (req, res) => {
 
 // (POST) create a new review
 exports.createReview = async (req, res) => {
-    console.log('req.params.user_id', req.body.user_id);
     try {
         const result = await Participation.findOne({
             where: {
-                user_id: req.body.user_id,
-                test_id: req.body.test_id,
+                user_id: req.params.user_id,
+                test_id: req.params.test_id,
             },
         });
 
+        console.log('hhhhhhhhhh', result);
         if (result) {
             const reviewData = {
                 user_id: result.user_id,
@@ -32,29 +31,34 @@ exports.createReview = async (req, res) => {
             const createdReview = await Review.create(reviewData);
             console.log('리뷰가 작성되었습니다:', createdReview);
         } else {
-            console.log('참가 테이블에서 해당 사용자 및 테스트에 대한 결과를 찾을 수 없습니다.');
+            console.error('참여하지 않은 테스트에 대한 리뷰는 작성할 수 없습니다.');
         }
     } catch (error) {
         console.error('리뷰 작성 중 오류가 발생했습니다:', error);
     }
 };
 
-// // (PATCH) edit a specific review
-// exports.CpatchReview = (req, res) => {
-//   let reviewId = req.params.reviewId;
-//   //여기로 데이터 받아오기
-//   Review.update({ title: "수정완료" }, { where: { id: reviewId } }).then(
-//     (result) => {
-//       res.send({ data: result });
-//     }
-//   );
-// };
+// (PATCH) edit a specific review
+// (PATCH) edit a specific review
+exports.patchReview = (req, res) => {
+    let review_id = req.params.review_id;
+    let updatedContent = req.body.content; // 수정된 내용을 요청 본문(body)에서 가져옵니다.
 
-// // (DELETE) remove a specific review
-// exports.CdeleteReview = (req, res) => {
-//   let reviewId = req.params.reviewId;
-//   console.log(reviewId);
-//   Review.destroy({ where: { id: reviewId } }).then((result) => {
-//     res.send({ data: result });
-//   });
-// };
+    Review.update({ content: updatedContent }, { where: { review_id: review_id } })
+        .then((result) => {
+            res.send({ data: result });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: '리뷰 편집 중 오류가 발생했습니다.' });
+        });
+};
+
+// (DELETE) remove a specific review
+exports.deleteReview = (req, res) => {
+    let review_id = req.params.review_id;
+    console.log(review_id);
+    Review.destroy({ where: { review_id: review_id } }).then((result) => {
+        res.send({ data: result });
+    });
+};
