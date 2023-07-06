@@ -98,7 +98,7 @@ exports.CPostUser = async (req, res) => {
         checkSpace(req.body.user_id.trim()) &&
         checkSpace(req.body.password.trim()) &&
         checkSpecial(req.body.password.trim()) &&
-        checkPasswordPattern(req.body.password.trim() && req.body.user_id.length <= 10)
+        checkPasswordPattern(req.body.password.trim())
     ) {
         id = req.body.user_id.trim();
     } else {
@@ -122,7 +122,7 @@ exports.CPostUser = async (req, res) => {
     // 이메일 중복 확인, 암호화하여 DB에 추가
     const duplicatedEmail = result.find((user) => user.email === email);
     if (duplicatedEmail) {
-        res.send({ msg: '이미 회원으로 등록되어 있습니다.', result: false });
+        res.send({ msg: '이미 회원으로 등록되어 있습니다.', result: 'user' });
         return false;
     } else {
         pw = req.body.password.trim();
