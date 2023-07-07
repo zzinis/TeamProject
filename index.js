@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const PORT = 8000;
-app.use(cors());
-app.use(express.static('public'));
-//session 설정
+const http = require('http');
+const { Server } = require('socket.io');
+const userRouter = require('./routes/user');
+const reviewRouter = require('./routes/review');
+const testRouter = require('./routes/test');
+
 const session = require('express-session');
 app.use(
     session({
@@ -14,20 +16,37 @@ app.use(
     }),
 );
 
-//body-parser
+app.use(cors());
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const userRouter = require('./routes/user');
 app.use('/', userRouter);
-const reviewRouter = require('./routes/review');
 app.use('/', reviewRouter);
+app.use('/', testRouter);
 
-app.get('*', (req, res) => {
-    //views/404.ejs
-    res.render('404');
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST'],
+    },
 });
 
-app.listen(PORT, function () {
+io.on('connect', (socket) => {
+    console.log(`User Connected: ${socket.id}`);
+    io.emit('notice', `${socket.id}님이 입장하셨습니다`);
+
+    socket.on('join_room', (data) => {
+        socket.join(data);
+    });
+
+    socket.on('send_message', (data) => {
+        socket.to(data.room).emit('receive_message', data);
+    });
+});
+
+const PORT = 8000;
+server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
