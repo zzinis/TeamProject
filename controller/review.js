@@ -1,6 +1,6 @@
 const db = require('../models');
 const Participation = db.Participation;
-
+const User = db.User;
 const Review = db.Review;
 // (GET) show all review
 exports.CgetReview = (req, res) => {
@@ -19,13 +19,20 @@ exports.createReview = async (req, res) => {
                 test_id: req.params.test_id,
             },
         });
+        const user = await User.findOne({
+            where: {
+                id: req.params.user_id,
+            },
+        });
 
-        console.log('hhhhhhhhhh', result);
-        if (result) {
+        if ((result, user)) {
             const reviewData = {
                 user_id: result.user_id,
+                //axios 보낸거 받아서 content에 넣어주기
                 content: req.body.content,
                 result: result.result,
+                img: user.img,
+                test_name: result.test_name,
             };
 
             const createdReview = await Review.create(reviewData);
