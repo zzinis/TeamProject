@@ -1,5 +1,5 @@
-module.exports = (Sequelize, DataTypes) => {
-    const Review = Sequelize.define(
+module.exports = (sequelize, DataTypes) => {
+    const Review = sequelize.define(
         'Review',
         {
             review_id: {
@@ -10,24 +10,40 @@ module.exports = (Sequelize, DataTypes) => {
             },
             user_id: {
                 type: DataTypes.STRING(10),
-                allowNull: true,
+                allowNull: false,
                 references: {
-                    model: 'user',
+                    model: 'User',
                     key: 'id',
                 },
             },
             content: {
                 type: DataTypes.TEXT,
-                allowNull: true,
+                allowNull: false,
             },
             created_at: {
                 type: DataTypes.DATE,
-                allowNull: true,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                allowNull: false,
+                defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
             },
             result: {
                 type: DataTypes.STRING(30),
-                allowNull: true,
+                allowNull: false,
+            },
+            test_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'Test',
+                    key: 'test_id',
+                },
+            },
+            img: {
+                type: DataTypes.STRING(10),
+                allowNull: false,
+                references: {
+                    model: 'User',
+                    key: 'img',
+                },
             },
         },
         {
