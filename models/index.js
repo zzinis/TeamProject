@@ -37,5 +37,6 @@ db.Sequelize = Sequelize;
 db.User = require('./User')(sequelize, Sequelize);
 db.Review = require('./Review')(sequelize, Sequelize);
 db.Participation = require('./Participation')(sequelize, Sequelize);
+db.Test = require('./Test')(sequelize, Sequelize);
 
 module.exports = db;
