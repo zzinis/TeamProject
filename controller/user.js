@@ -92,7 +92,7 @@ function checkPasswordPattern(str) {
 
 // 회원 가입
 exports.CPostUser = async (req, res) => {
-    let id, pw, name, email;
+    let id, pw, name, email, img;
     // 데이터 유효성 검사
     if (
         checkSpace(req.body.user_id.trim()) &&
@@ -127,6 +127,7 @@ exports.CPostUser = async (req, res) => {
     } else {
         pw = req.body.password.trim();
         name = req.body.name.trim();
+        img = req.body.profile.trim();
 
         // 비밀번호 암호화
         const hashedPassword = await bcrypt.hash(pw, 10);
@@ -135,6 +136,7 @@ exports.CPostUser = async (req, res) => {
             pw: hashedPassword,
             name: name,
             email: email,
+            img: img,
         }).then((result) => {
             res.send({ message: '가입이 완료되었습니다.', result: true });
         });
