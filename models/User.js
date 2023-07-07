@@ -1,5 +1,5 @@
-module.exports = (Sequelize, DataTypes) => {
-    const User = Sequelize.define(
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define(
         'User',
         {
             id: {
@@ -9,15 +9,89 @@ module.exports = (Sequelize, DataTypes) => {
             },
             pw: {
                 type: DataTypes.STRING(10),
-                allowNull: false,
+                allowNull: true,
             },
             name: {
-                type: DataTypes.STRING(10),
-                allowNull: false,
+                type: DataTypes.STRING(20),
+                allowNull: true,
             },
             email: {
                 type: DataTypes.STRING(50),
+                allowNull: true,
+            },
+            img: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
+        },
+        {
+            tableName: 'user',
+            freezeTableName: true,
+            timestamps: false,
+        },
+    );
+
+    return User;
+};
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define(
+        'User',
+        {
+            id: {
+                type: DataTypes.STRING(10),
                 allowNull: false,
+                primaryKey: true,
+            },
+            pw: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
+            name: {
+                type: DataTypes.STRING(20),
+                allowNull: true,
+            },
+            email: {
+                type: DataTypes.STRING(50),
+                allowNull: true,
+            },
+            img: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
+            },
+        },
+        {
+            tableName: 'user',
+            freezeTableName: true,
+            timestamps: false,
+        },
+    );
+
+    return User;
+};
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define(
+        'User',
+        {
+            id: {
+                type: DataTypes.STRING(10),
+                allowNull: false,
+                primaryKey: true,
+            },
+            pw: {
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            name: {
+                type: DataTypes.STRING(20),
+                allowNull: true,
+            },
+            email: {
+                type: DataTypes.STRING(50),
+                allowNull: true,
+            },
+            img: {
+                type: DataTypes.STRING(10),
+                allowNull: true,
             },
         },
         {
