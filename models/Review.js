@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 allowNull: false,
                 references: {
-                    model: 'User',
+                    model: 'user',
                     key: 'id',
                 },
             },
@@ -29,19 +29,19 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(30),
                 allowNull: false,
             },
-            test_id: {
-                type: DataTypes.INTEGER,
+            test_name: {
+                type: DataTypes.STRING(30),
                 allowNull: false,
                 references: {
-                    model: 'Test',
-                    key: 'test_id',
+                    model: 'test',
+                    key: 'test_name',
                 },
             },
             img: {
                 type: DataTypes.STRING(10),
                 allowNull: false,
                 references: {
-                    model: 'User',
+                    model: 'user',
                     key: 'img',
                 },
             },
