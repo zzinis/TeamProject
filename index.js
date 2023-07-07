@@ -5,6 +5,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const userRouter = require('./routes/user');
 const reviewRouter = require('./routes/review');
+const testRouter = require('./routes/test');
 
 const session = require('express-session');
 app.use(
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/', userRouter);
 app.use('/', reviewRouter);
+app.use('/', testRouter);
 
 const server = http.createServer(app);
 const io = new Server(server, {
