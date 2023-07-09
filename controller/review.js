@@ -4,8 +4,9 @@ const User = db.User;
 const Review = db.Review;
 // (GET) show all review
 exports.CgetReview = (req, res) => {
-    Review.findAll().then((result) => {
-        console.log(result);
+    Review.findAll({
+        where: req.query.selectedOption === 'All' ? {} : { test_name: req.query.selectedOption },
+    }).then((result) => {
         res.send(result);
     });
 };
