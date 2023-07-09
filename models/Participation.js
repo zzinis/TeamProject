@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 allowNull: false,
                 references: {
-                    model: 'User',
+                    model: 'user',
                     key: 'id',
                 },
             },
@@ -20,13 +20,9 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(30),
                 allowNull: false,
                 references: {
-                    model: 'Test',
+                    model: 'test',
                     key: 'test_name',
                 },
-            },
-            participation_date: {
-                type: DataTypes.DATE,
-                allowNull: false,
             },
             result: {
                 type: DataTypes.STRING(30),
