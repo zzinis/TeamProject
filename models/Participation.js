@@ -16,16 +16,16 @@ module.exports = (sequelize, DataTypes) => {
                     key: 'id',
                 },
             },
-            test_id: {
-                type: DataTypes.INTEGER,
+            test_name: {
+                type: DataTypes.STRING(30),
                 allowNull: false,
                 references: {
                     model: 'Test',
-                    key: 'test_id',
+                    key: 'test_name',
                 },
             },
             participation_date: {
-                type: DataTypes.DATEONLY,
+                type: DataTypes.DATE,
                 allowNull: false,
             },
             result: {

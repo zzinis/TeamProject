@@ -5,20 +5,20 @@ const saltRounds = 10;
 
 // 로그인
 exports.CPostSignin = (req, res) => {
-    const id = req.body.user_id;
-    const pw = req.body.password;
+    const id = req.body.user_id.current;
+    const pw = req.body.password.current;
 
     User.findOne({ where: { id: id } })
         .then((user) => {
             if (!user) {
-                res.send({ msg: '로그인에 실패했습니다.', result: false });
+                res.send({ msg: '로그인에 실패했습니다', result: false });
                 return;
             }
 
             // 비밀번호 일치 여부를 확인
             bcrypt.compare(pw, user.pw, (err, result) => {
                 if (err) {
-                    res.send({ msg: '로그인에 실패했습니다.', result: false });
+                    res.send({ msg: '로그인에 실패했습니다', result: false });
                 }
                 if (result) {
                     // 로그인 성공 시 세션에 사용자 정보 저장
@@ -31,12 +31,12 @@ exports.CPostSignin = (req, res) => {
                     });
                     res.send({ msg: '로그인에 성공했습니다.', result: true });
                 } else {
-                    res.send({ msg: '로그인에 실패했습니다.', result: false });
+                    res.send({ msg: '로그인에 실패했습니다', result: false });
                 }
             });
         })
         .catch((error) => {
-            res.send({ msg: '로그인에 실패했습니다.', result: false });
+            res.send({ msg: 'id가 존재하지 않습니다.', result: false });
         });
 };
 
@@ -143,10 +143,10 @@ exports.CPostUser = async (req, res) => {
     }
 };
 
-// (DELETE) 회원탈퇴
+// (DELETE) 회원탈퇴 (수정필요)
 exports.CdeleteUser = (req, res) => {
     const userPw = req.params.todoId;
-    Todo.destroy({ where: { id: todoId } }).then((result) => {
+    User.destroy({ where: { id: todoId } }).then((result) => {
         res.send({ data: result });
     });
 };
