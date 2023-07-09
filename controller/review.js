@@ -4,8 +4,10 @@ const Participation = db.Participation;
 const Review = db.Review;
 // (GET) show all review
 exports.CgetReview = (req, res) => {
-    Review.findAll().then((result) => {
-        // console.log(result);
+    console.log('프론트값 확인', req.query.selectedOption);
+    Review.findAll({
+        where: req.query.selectedOption === 'All' ? {} : { test_name: req.query.selectedOption },
+    }).then((result) => {
         res.send(result);
     });
 };
