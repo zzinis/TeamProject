@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             img: {
                 type: DataTypes.STRING(10),
                 allowNull: true,
+                primaryKey: true,
             },
         },
         {
