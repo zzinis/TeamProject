@@ -28,11 +28,15 @@ exports.createReview = async (req, res) => {
 
         if ((result, user)) {
             const reviewData = {
+                //participation에 있는 user_id를 가져와서 넣어주기
                 user_id: result.user_id,
                 //axios 보낸거 받아서 content에 넣어주기
                 content: req.body.content,
+                //participation에 있는 result를 넣어주기
                 result: result.result,
+                //user에 있는 img를 넣어주기
                 img: user.img,
+                //participation에 있는 test_name을 넣어주기
                 test_name: result.test_name,
             };
 
