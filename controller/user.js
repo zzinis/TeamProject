@@ -3,6 +3,19 @@ const User = db.User;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+// 회원 정보 조회
+exports.getUser = (req, res) => {
+    const id = req.params.id;
+
+    User.findOne({ where: { id: id } }).then((user) => {
+        if (!user) {
+            res.send({ msg: '회원 정보가 없습니다.', result: false });
+            return;
+        }
+        res.send({ msg: '회원 정보 조회에 성공했습니다.', result: true, user: user });
+    });
+};
+
 // 로그인
 exports.CPostSignin = (req, res) => {
     const id = req.body.user_id.current;
