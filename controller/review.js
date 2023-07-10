@@ -5,7 +5,7 @@ const Review = db.Review;
 // (GET) show all review
 exports.CgetReview = (req, res) => {
     Review.findAll().then((result) => {
-        console.log(result);
+        // console.log(result);
         res.send(result);
     });
 };
@@ -20,7 +20,6 @@ exports.createReview = async (req, res) => {
             },
         });
 
-        console.log('hhhhhhhhhh', result);
         if (result) {
             const reviewData = {
                 user_id: result.user_id,
