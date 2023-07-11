@@ -30,8 +30,7 @@ app.use('/', participation);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
-        methods: ['GET', 'POST'],
+        origin: '*',
     },
 });
 
@@ -50,5 +49,5 @@ io.on('connect', (socket) => {
 
 const PORT = 8000;
 server.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+    console.log(`페이지 :${PORT}`);
 });
