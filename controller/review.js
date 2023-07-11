@@ -38,6 +38,7 @@ exports.createReview = async (req, res) => {
 
             const createdReview = await Review.create(reviewData);
             console.log('리뷰가 작성되었습니다:', createdReview);
+            res.send({ result: true, data: createdReview });
         } else {
             console.error('참여하지 않은 테스트에 대한 리뷰를 작성할 수 없습니다.');
         }
