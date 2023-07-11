@@ -7,6 +7,7 @@ const userRouter = require('./routes/user');
 const reviewRouter = require('./routes/review');
 const testRouter = require('./routes/test');
 const participation = require('./routes/participation');
+const Ask = require('./routes/ask');
 
 const session = require('express-session');
 app.use(
@@ -26,6 +27,7 @@ app.use('/', userRouter);
 app.use('/', reviewRouter);
 app.use('/', testRouter);
 app.use('/', participation);
+app.use('/', Ask);
 
 const server = http.createServer(app);
 const io = new Server(server, {
