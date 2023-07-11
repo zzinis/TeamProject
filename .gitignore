@@ -9,8 +9,7 @@
 /coverage
 
 # config
-config.json
-/config
+
 # production
 /build
 

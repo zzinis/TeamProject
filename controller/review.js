@@ -16,34 +16,31 @@ exports.createReview = async (req, res) => {
     try {
         const result = await Participation.findOne({
             where: {
-                user_id: req.params.user_id,
-                test_id: req.params.test_id,
-            },
-        });
-        const user = await User.findOne({
-            where: {
-                id: req.params.user_id,
+                user_id: req.body.userId,
+                test_name: req.body.test_name,
             },
         });
 
-        if ((result, user)) {
+        const user = await User.findOne({
+            where: {
+                id: req.body.userId,
+            },
+        });
+
+        if (result && user) {
             const reviewData = {
-                //participation에 있는 user_id를 가져와서 넣어주기
                 user_id: result.user_id,
-                //axios 보낸거 받아서 content에 넣어주기
                 content: req.body.content,
-                //participation에 있는 result를 넣어주기
                 result: result.result,
-                //user에 있는 img를 넣어주기
                 img: user.img,
-                //participation에 있는 test_name을 넣어주기
                 test_name: result.test_name,
             };
 
             const createdReview = await Review.create(reviewData);
             console.log('리뷰가 작성되었습니다:', createdReview);
+            res.send({ result: true, data: createdReview });
         } else {
-            console.error('참여하지 않은 테스트에 대한 리뷰는 작성할 수 없습니다.');
+            console.error('참여하지 않은 테스트에 대한 리뷰를 작성할 수 없습니다.');
         }
     } catch (error) {
         console.error('리뷰 작성 중 오류가 발생했습니다:', error);
