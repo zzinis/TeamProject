@@ -14,15 +14,6 @@ exports.CgetAsk = (req, res) => {
     });
 };
 
-exports.CgetAskAll = (req, res) => {
-    // console.log('user_id', req.query.user_id);
-    Ask.findAll({
-        order: [['ask_id', 'DESC']],
-    }).then((result) => {
-        res.send(result);
-    });
-};
-
 //POST (문의 페이지 문의글 등록)
 exports.CpostAsk = (req, res) => {
     Ask.create({
