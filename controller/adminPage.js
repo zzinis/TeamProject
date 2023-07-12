@@ -33,7 +33,8 @@ exports.CpatchAdminPage = (req, res) => {
 
 exports.CdelAdminPage = (req, res) => {
     let ask_id = req.params.ask_id;
-    Review.destroy({ where: { ask_id: ask_id } }).then((result) => {
+    console.log(ask_id);
+    Ask.destroy({ where: { ask_id: ask_id } }).then((result) => {
         res.send({ data: result });
     });
 };
