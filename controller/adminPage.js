@@ -11,7 +11,7 @@ exports.CgetAdminPage = (req, res) => {
 };
 
 //PATCH (관리자 페이지에 문의 글 댓글 달기)
-exports.CpatchAdminPage = async (req, res) => {
+exports.CpatchAdminPage = (req, res) => {
     const ask_id = req.body.ask_id;
     const manager_msg = req.body.comment;
     console.log('ask_id ', ask_id);
@@ -29,4 +29,11 @@ exports.CpatchAdminPage = async (req, res) => {
             console.error('댓글 수정에 실패했습니다:', error);
             res.status(500).json({ error: '댓글 수정에 실패했습니다.' });
         });
+};
+
+exports.CdelAdminPage = (req, res) => {
+    let ask_id = req.params.ask_id;
+    Review.destroy({ where: { ask_id: ask_id } }).then((result) => {
+        res.send({ data: result });
+    });
 };

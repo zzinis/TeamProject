@@ -7,4 +7,7 @@ const router = express.Router();
 router.get('/adminpage', controller.CgetAdminPage);
 // POST localhost:8000/adminpage
 router.patch('/adminpage', controller.CpatchAdminPage);
+
+// DELETE localhost:8000/adminpage
+router.delete('/adminpage', controller.CdelAdminPage);
 module.exports = router;
