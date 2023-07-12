@@ -9,5 +9,5 @@ router.get('/adminpage', controller.CgetAdminPage);
 router.patch('/adminpage', controller.CpatchAdminPage);
 
 // DELETE localhost:8000/adminpage
-router.delete('/adminpage', controller.CdelAdminPage);
+router.delete('/adminpage/:ask_id', controller.CdelAdminPage);
 module.exports = router;
