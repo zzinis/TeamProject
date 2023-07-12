@@ -40,5 +40,7 @@ exports.CpatchAsk = (req, res) => {
 // (DELETE) (문의 페이지 문의글 삭제)
 exports.CdelAsk = (req, res) => {
     let post_id = req.params.ask_id;
-    Ask.destroy({ where: { ask_id: post_id } }).then(() => {});
+    Ask.destroy({ where: { ask_id: post_id } }).then(() => {
+        res.send({ result: true, data: post_id });
+    });
 };
