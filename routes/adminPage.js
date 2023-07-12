@@ -6,5 +6,5 @@ const router = express.Router();
 // GET localhost:8000/adminpage
 router.get('/adminpage', controller.CgetAdminPage);
 // POST localhost:8000/adminpage
-router.post('/adminpage', controller.CpatchAdminPage);
+router.patch('/adminpage', controller.CpatchAdminPage);
 module.exports = router;
