@@ -163,3 +163,18 @@ exports.CdeleteUser = (req, res) => {
         res.send({ data: result });
     });
 };
+
+// (PATCH) 마이페이지 개인정보 수정
+exports.CpatchUser = (req, res) => {
+    User.update(
+        { name: req.body.name, email: req.body.email, id: req.body.id, pw: req.body.pw },
+        { where: { review_id: review_id } },
+    )
+        .then((result) => {
+            res.send({ data: result });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: '리뷰 편집 중 오류가 발생했습니다.' });
+        });
+};

@@ -8,6 +8,8 @@ const reviewRouter = require('./routes/review');
 const testRouter = require('./routes/test');
 const participation = require('./routes/participation');
 const Ask = require('./routes/ask');
+const AdminLogin = require('./routes/adminLogin');
+const AdminPage = require('./routes/adminPage');
 
 const session = require('express-session');
 app.use(
@@ -28,12 +30,13 @@ app.use('/', reviewRouter);
 app.use('/', testRouter);
 app.use('/', participation);
 app.use('/', Ask);
+app.use('/', AdminLogin);
+app.use('/', AdminPage);
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
-        methods: ['GET', 'POST'],
+        origin: '*',
     },
 });
 
@@ -52,5 +55,5 @@ io.on('connect', (socket) => {
 
 const PORT = 8000;
 server.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+    console.log(`페이지 :${PORT}`);
 });
